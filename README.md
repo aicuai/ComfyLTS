@@ -64,6 +64,18 @@ beyond Japan can pull and trust. Built images are published to GitHub Container 
 `org.opencontainers.image.source` points here) and the channel for **support, change requests,
 and bug reports via GitHub Issues**.
 
+## Notebooks
+
+Reproducible, well-documented notebooks that exercise the ComfyLTS stack live in [`notebooks/`](notebooks/):
+
+- **[`notebooks/MiniMaxH3_Colab.ipynb`](notebooks/MiniMaxH3_Colab.ipynb)** — run **MiniMax H3** audio+video
+  generation on Google Colab against a pinned **ComfyUI 0.31.0**. Documents the verified quality config from
+  our RTX 4000 Ada 20 GB runs (int8 UNET + fp16 video VAE + SageAttention + **20-step, no turbo LoRA**), the
+  H3 frame-count rule (`length = 5 + 17n`), model downloads from `Comfy-Org/MiniMax-H3`, and honest GPU
+  requirements (A100 40 GB recommended; free-tier **T4 16 GB is not enough** for the full stack).
+  ⚠️ **License:** the MiniMax H3 Community License is region-restricted (**not for EU/UK/Korea/US**); the
+  notebook is for **evaluation** only. Production serving gates region/age via AICU auth in **ComfyPods**.
+
 ## Status
 
 Early. This repository starts as the **vision and knowledge base**; the pinned build and the public
