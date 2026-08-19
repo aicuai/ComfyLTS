@@ -1,0 +1,139 @@
+# ComfyLTS 固定台帳 — LTS26.9
+#
+# この1ファイルが「何を入れれば本のとおりに動くか」の正本。
+# 人が読める形と機械が読める形を分けない。tools/lts-resolve.py が読む。
+#
+# 版は「タグ名 + コミットSHA」の対で持つ。上流はタグと GitHub Release を
+# 必ずしも対にしておらず（v0.33.0 / v0.33.2 はタグのみで Release なし）、
+# タグ名だけだと参照先を間違える。SHA があれば付け替えられても検出できる。
+
+apiVersion: comfylts/v1
+kind: LTSLine
+
+metadata:
+  name: LTS26.9
+  status: proposed          # proposed | approved | frozen | deprecated
+  created: 2026-08-20
+  summary: >-
+    Wan2.2（I2V / FLF2V）と Seedance2.0（R2V）を対象に含む LTS ライン。
+    書籍『【キャラクターを創り動かす】画像・動画生成AI スタートガイド』
+    （2026-09-19 発売）の付属ノートブックが依存する。
+  # 刊行後は動かさない。改善は次のタグへ入れる
+  frozenAfter: 2026-09-19
+
+runtime:
+  comfyui:
+    repo: https://github.com/comfyanonymous/ComfyUI
+    ref: v0.33.0
+    sha: 2f35f4a08176
+    hasGithubRelease: false     # タグのみ。/releases/tag/ を参照先にしない
+    license: GPL-3.0
+  python: "3.12"                # Colab 実測時
+  torch: ">=2.8"                # DynamicVRAM 要件（MiniMaxH3 ラインの知見）
+  platform:
+    verifiedOn: Google Colab A100-SXM4-80GB
+    notes: >-
+      無料枠 T4 はシステムメモリ13GB。ControlNet のプリプロセッサが
+      追加モデルを取得する場面で停止することがある。L4 以上を推奨。
+
+customNodes:
+  - name: comfyui-gguf
+    repo: https://github.com/Isi-dev/ComfyUI_GGUF
+    ref: 1.1.10
+  - name: rgthree-comfy
+    repo: https://github.com/rgthree/rgthree-comfy
+    ref: 1.0.2604070017
+  - name: comfyui_essentials
+    repo: https://github.com/cubiq/ComfyUI_essentials
+    ref: 9d9f4bedfc9f0321c19faf71855e228c93bd0dc9
+  - name: comfyui-kjnodes
+    repo: https://github.com/kijai/ComfyUI-KJNodes
+    ref: a6b867b63a29ca48ddb15c589e17a9f2d8530d57
+  - name: comfyui-videohelpersuite
+    repo: https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
+    ref: 2984ec4c4b93292421888f38db74a5e8802a8ff8
+    # ワークフロー間で 8e4d7947(2025-08-07) と割れていた。新しい側へ寄せた
+  - name: comfyui-frame-interpolation
+    repo: https://github.com/Fannovel16/ComfyUI-Frame-Interpolation
+    ref: 26545cc2dd95bc3d27f056016300673bdeee78f5
+  - name: comfyui-vfi
+    repo: https://github.com/GACLove/ComfyUI-VFI
+    ref: 62c60feff88f651c24e12006567ba48260ab43aa
+  - name: comfyui-painteri2v
+    repo: https://github.com/princepainter/ComfyUI-PainterI2V
+    ref: 652565fc032c77855a99a941f2c3a33e603a8258
+  - name: comfyui-logicutils
+    repo: https://github.com/aria1th/ComfyUI-LogicUtils
+    ref: 1.7.2
+  - name: seedvr2-videoupscaler
+    repo: https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler
+    ref: 4490bd1f482e026674543386bb2a4d176da245b9
+
+# モデルの配布元。license は ComfyLTS の存在理由なので必ず埋める。
+# unknown を残したまま approved にしない。
+modelSources:
+  - repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    host: huggingface
+    license: unknown            # TODO: 要確認
+  - repo: Comfy-Org/Wan_2.1_ComfyUI_repackaged
+    host: huggingface
+    license: unknown            # TODO: 要確認
+  - repo: QuantStack/Wan2.2-I2V-A14B-GGUF
+    host: huggingface
+    license: unknown            # TODO: 要確認
+  - repo: QuantStack/Wan2.2-T2V-A14B-GGUF
+    host: huggingface
+    license: unknown            # TODO: 要確認
+  - repo: Kijai/WanVideo_comfy
+    host: huggingface
+    license: unknown            # TODO: 要確認
+  - repo: stabilityai/sdxl-vae
+    host: huggingface
+    license: unknown            # TODO: 要確認
+  - repo: bluepen5805/mellow_pencil-XL
+    host: huggingface
+    license: unknown            # TODO: 要確認
+  - repo: civitai
+    host: civitai
+    license: per-model          # 作者ごとに異なる。API キーが要るものがある
+    notes: >-
+      CIVITAI_KEY の「ダウンロードへのアクセス」を ON にしないと
+      静かに失敗し、LoRA が効いていない結果が出る。
+
+# この台帳が満たすべき動作。書籍の該当ページと対応づける
+verification:
+  source: aicuai/Book-SG26#8
+  measuredAt: 2026-08-19
+  routes:
+    - id: wan22-i2v
+      book: 5-2 p.5-8
+      workflow: workflow/SG26Wan22-14B-I2V-GGUF.json
+      result: pass
+      seconds: 208
+      output: 640x816
+    - id: wan22-flf2v
+      book: 5-3 p.12-14
+      workflow: workflow/SG26Wan22-14B-FLF2V-GGUF.json
+      result: pass
+      seconds: 246
+      output: 640x848
+    - id: seedance2-r2v
+      book: 5-4 p.19,25-26
+      workflow: workflow/WorkFlow_api_seedance2_R2V.json
+      result: pass
+      seconds: 230
+      output: 361frames 864x496
+    - id: seedvr2-upscale
+      book: 5-4 p.26
+      workflow: workflow/VideoUpScaleSeedVR2.json
+      result: pass
+      seconds: 250
+      output: 1254x720
+
+consumers:
+  - repo: aicuai/Book-SG26
+    path: ipynb/ComfyUI.ipynb
+    coupling: loose             # タグ名の文字列を共有するだけ。fetch しない
+    note: >-
+      Colab は git clone で入れるため、コンテナは使わない。
+      ComfyLTS が更新されても書籍側は追従しない（刊行後は固定）。
