@@ -97,6 +97,52 @@ LTS26.9        … タグ。書籍刊行時点の固定値
 - 静的検査と昇格ゲート: aicuai/comfy-aicu#29（private）
 - 統合テスト: aicuai/Book-SG26#8
 
+## モデルのライセンス（2026-08-20 実査）
+
+HuggingFace API の `cardData.license` を機械的に取得したもの。
+**「同梱してよいか」の判断は書かない。**材料だけ置く。
+
+| 配布元 | license | 同梱の可否 |
+|---|---|---|
+| `Comfy-Org/Wan_2.2_ComfyUI_Repackaged` | `apache-2.0` | ✅ 問題なし |
+| `Comfy-Org/Wan_2.1_ComfyUI_repackaged` | `apache-2.0` | ✅ 問題なし |
+| `QuantStack/Wan2.2-I2V-A14B-GGUF` | `apache-2.0` | ✅ 上流 `Wan-AI/Wan2.2-I2V-A14B` も apache-2.0 |
+| `QuantStack/Wan2.2-T2V-A14B-GGUF` | `apache-2.0` | ✅ 上流 `Wan-AI/Wan2.2-T2V-A14B` も apache-2.0 |
+| `stabilityai/sdxl-vae` | `mit` | ✅ 問題なし |
+| **`Kijai/WanVideo_comfy`** | **未指定** | ⚠️ 下記 |
+| **`bluepen5805/mellow_pencil-XL`** | **`faipl-1.0-sd`** | ⚠️ 下記 |
+
+### ⚠️ `Kijai/WanVideo_comfy` — ライセンス未指定
+
+モデルカードに `license` フィールドがない。`base_model` に上流が記録されており、
+[`Wan-AI/Wan2.1-VACE-14B`](https://huggingface.co/Wan-AI/Wan2.1-VACE-14B) は `apache-2.0`。
+
+ただし**再配布者が明示していない**ため、コンテナへ同梱するなら作者への確認が要る。
+参照（読者が各自ダウンロード）であれば上流の条件で足りる。
+
+### ⚠️ `bluepen5805/mellow_pencil-XL` — Fair AI Public License 1.0-SD
+
+[`faipl-1.0-sd`](https://freedevproject.org/faipl-1.0-sd/) は**コピーレフト系**。
+派生物は同一ライセンスでの公開が要る。Stable Diffusion の Prohibited Uses と
+互換になるよう設計された変種。
+
+**同梱・再配布は条件付き。**参照（各自ダウンロード）が安全。
+
+### Civitai
+
+作者ごとに異なる。**RAIL-M 等の問題ないものを収録している。**
+許諾フラグ（`Image` / `RentCivit` / `Rent` / `Sell`）の意味と個別の調査結果は、
+comfy-aicu の `infra/tests/MODEL_LICENSE_REVIEW.md` にある。
+
+> `CIVITAI_KEY` の「ダウンロードへのアクセス」を ON にしないと**静かに失敗**し、
+> LoRA が効いていない結果が出る。読者に伝える必要がある。
+
+### コンテナ化への含意
+
+7件中5件は `apache-2.0` / `mit` で同梱に支障がない。
+**残る2件が同梱の可否を分ける**ので、[Issue #5](../../issues/5) の
+「モデルは同梱せず、環境だけコンテナ化」から始める案は、この結果とも整合する。
+
 ---
 
 ## 機械可読な台帳

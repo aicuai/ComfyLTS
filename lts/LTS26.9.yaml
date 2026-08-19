@@ -72,31 +72,66 @@ customNodes:
 # モデルの配布元。license は ComfyLTS の存在理由なので必ず埋める。
 # unknown を残したまま approved にしない。
 modelSources:
+  # 2026-08-20 に HuggingFace API で実査。license は cardData.license の原文。
+  # 「同梱してよいか」の判断は書かない。材料だけ置く（comfy-aicu の方針に合わせる）。
   - repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
+    gated: false
+    checkedAt: 2026-08-20
   - repo: Comfy-Org/Wan_2.1_ComfyUI_repackaged
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
+    gated: false
+    checkedAt: 2026-08-20
   - repo: QuantStack/Wan2.2-I2V-A14B-GGUF
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
+    gated: false
+    checkedAt: 2026-08-20
+    notes: 量子化版。上流 Wan-AI/Wan2.2-I2V-A14B も apache-2.0
   - repo: QuantStack/Wan2.2-T2V-A14B-GGUF
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
+    gated: false
+    checkedAt: 2026-08-20
+    notes: 量子化版。上流 Wan-AI/Wan2.2-T2V-A14B も apache-2.0
   - repo: Kijai/WanVideo_comfy
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: unspecified          # カードに license 指定なし
+    gated: false
+    checkedAt: 2026-08-20
+    upstream:
+      - repo: Wan-AI/Wan2.1-VACE-14B
+        license: apache-2.0
+      - repo: Wan-AI/Wan2.1-VACE-1.3B
+    notes: >-
+      再配布物だが license フィールドが空。カードの base_model が上流を示しており、
+      そちらは apache-2.0。ただし**再配布者が明示していない**ため、
+      同梱するなら作者への確認が要る。参照（各自DL）なら上流の条件で足りる。
   - repo: stabilityai/sdxl-vae
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: mit
+    gated: false
+    checkedAt: 2026-08-20
   - repo: bluepen5805/mellow_pencil-XL
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: other
+    licenseName: faipl-1.0-sd     # Fair AI Public License 1.0-SD
+    licenseLink: https://freedevproject.org/faipl-1.0-sd/
+    gated: false
+    checkedAt: 2026-08-20
+    notes: >-
+      **コピーレフト系**。派生物は同一ライセンスでの公開が要る。
+      Stable Diffusion の Prohibited Uses と互換になるよう設計された変種。
+      同梱・再配布は条件付き。参照（各自DL）が安全。
   - repo: civitai
     host: civitai
-    license: per-model          # 作者ごとに異なる。API キーが要るものがある
+    license: per-model
     notes: >-
+      作者ごとに異なる。RAIL-M 等の問題ないものを収録している。
+      許諾フラグ（Image / RentCivit / Rent / Sell）の意味は
+      comfy-aicu の infra/tests/MODEL_LICENSE_REVIEW.md を参照。
       CIVITAI_KEY の「ダウンロードへのアクセス」を ON にしないと
       静かに失敗し、LoRA が効いていない結果が出る。
 
