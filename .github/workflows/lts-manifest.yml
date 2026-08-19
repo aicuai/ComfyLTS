@@ -1,0 +1,37 @@
+# 固定台帳が壊れていないかを見る。GPU もネットワークも要らない。
+#
+# 台帳は「書いた時点」ではなく「守られ続けるか」が価値なので、
+# PR のたびに機械で読む。人のレビューに任せると必ず抜ける。
+name: LTS manifest
+
+on:
+  pull_request:
+    paths: ['lts/**', 'tools/lts-resolve.py', '.github/workflows/lts-manifest.yml']
+  push:
+    branches: [master]
+    paths: ['lts/**', 'tools/lts-resolve.py']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pyyaml
+      - name: 台帳を検査
+        run: |
+          fail=0
+          for f in lts/*.yaml; do
+            echo "── $f"
+            ./tools/lts-resolve.py "$f" --check || fail=1
+          done
+          exit $fail
+      - name: インストール手順を生成できるか
+        run: |
+          for f in lts/*.yaml; do
+            ./tools/lts-resolve.py "$f" --sh > /dev/null
+            ./tools/lts-resolve.py "$f" --notebook > /dev/null
+          done
+          echo "✅ 生成できた"
