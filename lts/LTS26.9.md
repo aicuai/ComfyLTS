@@ -97,10 +97,48 @@ LTS26.9        … タグ。書籍刊行時点の固定値
 - 静的検査と昇格ゲート: aicuai/comfy-aicu#29（private）
 - 統合テスト: aicuai/Book-SG26#8
 
-## モデルのライセンス（2026-08-20 実査）
+## ライセンス一覧（2026-08-20 実査）
 
-HuggingFace API の `cardData.license` を機械的に取得したもの。
-**「同梱してよいか」の判断は書かない。**材料だけ置く。
+**LTS26.9 が触れるものを全部並べます。** 判断（収録可否）は書かず、材料だけ置きます。
+
+### ソフトウェア
+
+| 対象 | ライセンス |
+|---|---|
+| **ComfyUI 本体** | **GPL-3.0** |
+| `Isi-dev/ComfyUI_GGUF` | Apache-2.0 |
+| `rgthree/rgthree-comfy` | MIT |
+| `cubiq/ComfyUI_essentials` | MIT |
+| `Fannovel16/ComfyUI-Frame-Interpolation` | MIT |
+| `numz/ComfyUI-SeedVR2_VideoUpscaler` | Apache-2.0 |
+| **`kijai/ComfyUI-KJNodes`** | **GPL-3.0** |
+| **`Kosinkadink/ComfyUI-VideoHelperSuite`** | **GPL-3.0** |
+| ⚠️ `GACLove/ComfyUI-VFI` | **未記載** |
+| ⚠️ `princepainter/ComfyUI-PainterI2V` | **未記載** |
+| ⚠️ `aria1th/ComfyUI-LogicUtils` | **未記載** |
+
+**GPL-3.0 が3つ**（本体 + KJNodes + VideoHelperSuite）あります。コンテナに同梱して配布する場合、
+**GPL の義務（ソース提供）が発生**します。ComfyLTS の README が言う
+「GPL 義務のパッケージング」はここに効いてきます。
+
+**ライセンス未記載が3件**あります。GitHub の `LICENSE` ファイルが無い状態で、
+**既定では再配布の許諾がありません**。同梱するなら作者への確認が要ります。
+
+### Civitai（LoRA・チェックポイント）
+
+許諾フラグの意味 — `Image`=生成画像の販売可 / `RentCivit`=Civitai上で運用可 /
+`Rent`=他の有料サービスで運用可 / **`Sell`=モデル自体の再配布可**
+
+| モデル | 作者 | 許諾 | 再配布 |
+|---|---|---|---|
+| [Sierunami](https://civitai.com/models/1048343) | Ocean3 | `Image` `RentCivit` | ❌ **不可**（Sell なし） |
+| [Flying Effect (Wan2.1 I2V LoRA)](https://civitai.com/models/1348626) | Y_AI_N | `Image` `RentCivit` `Rent` `Sell` | ✅ 可 |
+| [Flow Camera](https://civitai.com/models/1903906) | Nul_samx | `Image` `RentCivit` `Rent` `Sell` | ✅ 可 |
+
+3件とも `allowNoCredit` / `allowDerivatives` あり。**Sierunami だけ `Sell` が無い**ので、
+コンテナ同梱や公開ミラーはできません。参照（読者が各自ダウンロード）は問題ありません。
+
+### モデル（HuggingFace）
 
 | 配布元 | license | 同梱の可否 |
 |---|---|---|
@@ -139,9 +177,20 @@ comfy-aicu の `infra/tests/MODEL_LICENSE_REVIEW.md` にある。
 
 ### コンテナ化への含意
 
-7件中5件は `apache-2.0` / `mit` で同梱に支障がない。
-**残る2件が同梱の可否を分ける**ので、[Issue #5](../../issues/5) の
-「モデルは同梱せず、環境だけコンテナ化」から始める案は、この結果とも整合する。
+同梱を妨げるものを数えると **6件**ある。
+
+| 種別 | 件数 | 内訳 |
+|---|---|---|
+| GPL-3.0（ソース提供義務） | 3 | ComfyUI 本体 / KJNodes / VideoHelperSuite |
+| ライセンス未記載 | 3 | ComfyUI-VFI / PainterI2V / LogicUtils |
+| モデルの条件付き | 3 | WanVideo_comfy（未指定）/ mellow_pencil-XL（コピーレフト）/ Sierunami（Sell なし） |
+
+GPL は義務を果たせば配布できるが、**未記載3件は許諾そのものが無い**。
+[Issue #5](../../issues/5) の「モデルは同梱せず、環境だけコンテナ化」でも、
+**カスタムノードの同梱でこの3件に当たる**ので、先に作者確認が要る。
+
+逆に、`git clone` で読者の環境に入れる現在の方式なら、**再配布に当たらない**ので
+どれも問題にならない。コンテナ化の判断は、この差を承知したうえで行うべき。
 
 ---
 

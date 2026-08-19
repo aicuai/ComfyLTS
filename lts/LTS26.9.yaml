@@ -40,34 +40,44 @@ customNodes:
   - name: comfyui-gguf
     repo: https://github.com/Isi-dev/ComfyUI_GGUF
     ref: 1.1.10
+    license: Apache-2.0
   - name: rgthree-comfy
     repo: https://github.com/rgthree/rgthree-comfy
     ref: 1.0.2604070017
+    license: MIT
   - name: comfyui_essentials
     repo: https://github.com/cubiq/ComfyUI_essentials
     ref: 9d9f4bedfc9f0321c19faf71855e228c93bd0dc9
+    license: MIT
   - name: comfyui-kjnodes
     repo: https://github.com/kijai/ComfyUI-KJNodes
     ref: a6b867b63a29ca48ddb15c589e17a9f2d8530d57
+    license: GPL-3.0
   - name: comfyui-videohelpersuite
     repo: https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
     ref: 2984ec4c4b93292421888f38db74a5e8802a8ff8
+    license: GPL-3.0
     # ワークフロー間で 8e4d7947(2025-08-07) と割れていた。新しい側へ寄せた
   - name: comfyui-frame-interpolation
     repo: https://github.com/Fannovel16/ComfyUI-Frame-Interpolation
     ref: 26545cc2dd95bc3d27f056016300673bdeee78f5
+    license: MIT
   - name: comfyui-vfi
     repo: https://github.com/GACLove/ComfyUI-VFI
     ref: 62c60feff88f651c24e12006567ba48260ab43aa
+    license: unspecified
   - name: comfyui-painteri2v
     repo: https://github.com/princepainter/ComfyUI-PainterI2V
     ref: 652565fc032c77855a99a941f2c3a33e603a8258
+    license: unspecified
   - name: comfyui-logicutils
     repo: https://github.com/aria1th/ComfyUI-LogicUtils
     ref: 1.7.2
+    license: unspecified
   - name: seedvr2-videoupscaler
     repo: https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler
     ref: 4490bd1f482e026674543386bb2a4d176da245b9
+    license: Apache-2.0
 
 # モデルの配布元。license は ComfyLTS の存在理由なので必ず埋める。
 # unknown を残したまま approved にしない。
@@ -125,15 +135,39 @@ modelSources:
       **コピーレフト系**。派生物は同一ライセンスでの公開が要る。
       Stable Diffusion の Prohibited Uses と互換になるよう設計された変種。
       同梱・再配布は条件付き。参照（各自DL）が安全。
+  # Civitai は作者ごとに条件が違うので個別に記録する。
+  # 許諾フラグの意味: Image=生成画像の販売可 / RentCivit=Civitai上で運用可 /
+  # Rent=他の有料サービスで運用可 / Sell=モデル自体の再配布可
+  - repo: civitai:1048343
+    host: civitai
+    name: Sierunami
+    creator: Ocean3
+    license: "Image, RentCivit"
+    permissions: allowNoCredit, allowDerivatives
+    checkedAt: 2026-08-20
+    notes: Sell が無いので**再配布不可**。参照のみ
+  - repo: civitai:1348626
+    host: civitai
+    name: Flying Effect (Wan2.1 I2V LoRA)
+    creator: Y_AI_N
+    license: "Image, RentCivit, Rent, Sell"
+    permissions: allowNoCredit, allowDerivatives, allowDifferentLicense
+    checkedAt: 2026-08-20
+    notes: Sell あり。再配布可
+  - repo: civitai:1903906
+    host: civitai
+    name: Flow Camera
+    creator: Nul_samx
+    license: "Image, RentCivit, Rent, Sell"
+    permissions: allowNoCredit, allowDerivatives, allowDifferentLicense
+    checkedAt: 2026-08-20
+    notes: Sell あり。再配布可
   - repo: civitai
     host: civitai
     license: per-model
     notes: >-
-      作者ごとに異なる。RAIL-M 等の問題ないものを収録している。
-      許諾フラグ（Image / RentCivit / Rent / Sell）の意味は
-      comfy-aicu の infra/tests/MODEL_LICENSE_REVIEW.md を参照。
       CIVITAI_KEY の「ダウンロードへのアクセス」を ON にしないと
-      静かに失敗し、LoRA が効いていない結果が出る。
+      静かに失敗し、LoRA が効いていない結果が出る。読者に伝える必要がある。
 
 # この台帳が満たすべき動作。書籍の該当ページと対応づける
 verification:
