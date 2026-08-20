@@ -12,7 +12,14 @@
 
   - 必須フィールドの欠落
   - ref / sha の書式（タグ名は残す。SHA だけにしない ― 人が読めなくなる）
-  - status が approved なのに license: unknown が残っていないか
+  - customNodes[].ref が **git で解決できる値**か
+    ワークフロー JSON の properties.ver は Comfy Registry のバージョン番号であって
+    git ref ではない。`1.1.10` や `1.0.2604070017` をそのまま ref に書くと
+    `git checkout` が失敗する。Registry 由来の値は registryVersion に置き、
+    ref には解決した SHA を書く。ここを通すと Colab がその場で落ちる
+  - status が approved なのに license が unknown / undeclared のまま残っていないか
+    unknown は未調査、undeclared は調べたが配布元が宣言していない状態。
+    どちらも「承認済み」を名乗れない
     ライセンス整理が ComfyLTS の存在理由なので、ここは落とす
 """
 import argparse, re, sys
@@ -23,7 +30,10 @@ except ImportError:
     sys.exit("PyYAML が要る: pip install pyyaml")
 
 SHA = re.compile(r"^[0-9a-f]{7,40}$")
-
+# Comfy Registry のバージョン番号は「数字とドットだけ」。git タグにも同じ形は
+# ありうるので、書式だけでは判別できない。そこで判別を書式に頼らず、
+# 「数字だけの ref は、それが git タグだと人が明言しない限り通さない」形にする。
+BARE_NUMERIC = re.compile(r"^\d+(\.\d+)*$")
 
 def check(d: dict) -> list[str]:
     errs = []
@@ -39,12 +49,33 @@ def check(d: dict) -> list[str]:
         errs.append(f"runtime.comfyui.sha が SHA に見えない: {c['sha']}")
 
     for n in d.get("customNodes", []):
+        name = n.get("name", "?")
         if not (n.get("repo") and n.get("ref")):
-            errs.append(f"customNodes[{n.get('name','?')}] に repo/ref がない")
+            errs.append(f"customNodes[{name}] に repo/ref がない")
+            continue
+        ref = str(n["ref"])
+
+        # registryVersion を書いたなら、ref は解決済みの SHA でなければならない。
+        # 両方に Registry のバージョン番号が入っている状態が、まさに直したい形。
+        if n.get("registryVersion") and not SHA.fullmatch(ref):
+            errs.append(
+                f"customNodes[{name}]: registryVersion があるのに ref が SHA でない: {ref}"
+                " — registryVersion は git ref ではないので、解決した 40 桁 SHA を ref に書く"
+            )
+
+        # 数字だけの ref は Registry のバージョン番号である可能性が高い。
+        # 本当に git タグなら refIsGitTag: true で明言させる（書式では判別できない）。
+        elif BARE_NUMERIC.fullmatch(ref) and not n.get("refIsGitTag"):
+            errs.append(
+                f"customNodes[{name}].ref が数字だけ: {ref}"
+                " — Comfy Registry のバージョン番号なら git checkout が失敗する。"
+                " SHA に解決して registryVersion に元の値を残すか、"
+                " 実在する git タグなら refIsGitTag: true を付けること"
+            )
 
     # 承認済みを名乗るなら、ライセンス未確認を残さない
     if md.get("status") == "approved":
-        unk = [m["repo"] for m in d.get("modelSources", []) if m.get("license") in (None, "unknown")]
+        unk = [m["repo"] for m in d.get("modelSources", []) if m.get("license") in (None, "unknown", "undeclared")]
         if unk:
             errs.append("status: approved だが license: unknown が残っている: " + ", ".join(unk))
 
@@ -95,7 +126,7 @@ def main() -> None:
         md = d.get("metadata", {})
         print(f"{md.get('name')}  status={md.get('status')}  "
               f"nodes={len(d.get('customNodes', []))}  routes={len(d.get('verification', {}).get('routes', []))}")
-        unk = [m["repo"] for m in d.get("modelSources", []) if m.get("license") in (None, "unknown")]
+        unk = [m["repo"] for m in d.get("modelSources", []) if m.get("license") in (None, "unknown", "undeclared")]
         if unk:
             print(f"  ライセンス未確認 {len(unk)}件: " + ", ".join(unk))
         if errs:

@@ -36,13 +36,25 @@ runtime:
       無料枠 T4 はシステムメモリ13GB。ControlNet のプリプロセッサが
       追加モデルを取得する場面で停止することがある。L4 以上を推奨。
 
+# ref は **git が解決できる値**（タグ or 40桁 SHA）に限る。
+# ワークフロー JSON の properties.ver は Comfy Registry のバージョン番号で、
+# git ref ではない。そのまま ref に書くと `git checkout` が失敗する。
+# Registry 由来の値は registryVersion に残し、ref には解決した SHA を書く。
+# tools/lts-resolve.py --check がこれを検査する。
 customNodes:
   - name: comfyui-gguf
     repo: https://github.com/Isi-dev/ComfyUI_GGUF
-    ref: 1.1.10
+    ref: bc5223b0e37e053dbec2ea5e5f52c2fd4b8f712a
+    registryVersion: 1.1.10
+    # ⚠️ registryVersion は git ref ではない。git checkout 1.1.10 は失敗する。
+    # さらに Registry の comfyui-gguf 1.1.10 は city96 版を指しており、
+    # 書籍のワークフローが実際に使う Isi-dev フォークとは別物。
+    # フォークは 2025-03-16 を最後に更新が無いので、その HEAD で固定した。
   - name: rgthree-comfy
     repo: https://github.com/rgthree/rgthree-comfy
-    ref: 1.0.2604070017
+    ref: 683836c46e898668936c433502504cc0627482c5
+    registryVersion: 1.0.2604070017
+    # タグを打たないリポジトリ。Registry 公開日(2026-04-07)から解決した
   - name: comfyui_essentials
     repo: https://github.com/cubiq/ComfyUI_essentials
     ref: 9d9f4bedfc9f0321c19faf71855e228c93bd0dc9
@@ -64,35 +76,48 @@ customNodes:
     ref: 652565fc032c77855a99a941f2c3a33e603a8258
   - name: comfyui-logicutils
     repo: https://github.com/aria1th/ComfyUI-LogicUtils
-    ref: 1.7.2
+    ref: 33a0a38ecb627068996786087e2e6d09f53621f4
+    registryVersion: 1.7.2
+    # タグを打たないリポジトリ。Registry 公開日(2025-03-09)から解決した
   - name: seedvr2-videoupscaler
     repo: https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler
     ref: 4490bd1f482e026674543386bb2a4d176da245b9
 
 # モデルの配布元。license は ComfyLTS の存在理由なので必ず埋める。
-# unknown を残したまま approved にしない。
+# unknown / undeclared を残したまま approved にしない。
+#   unknown    = まだ調べていない
+#   undeclared = 調べたが配布元が宣言していない（作者への確認が要る）
+# 2026-08-20 に HuggingFace API で全件実査した。
 modelSources:
   - repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
   - repo: Comfy-Org/Wan_2.1_ComfyUI_repackaged
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
   - repo: QuantStack/Wan2.2-I2V-A14B-GGUF
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
+    licenseNote: >-
+      量子化元の Wan2.2 を継承
   - repo: QuantStack/Wan2.2-T2V-A14B-GGUF
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: apache-2.0
+    licenseNote: >-
+      量子化元の Wan2.2 を継承
   - repo: Kijai/WanVideo_comfy
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: undeclared
+    licenseNote: >-
+      リポジトリに宣言なし（同梱の ditto_LICENSE.txt は LoRA 個別のもの）。収録物の上流（Wan-AI / lightx2v）はいずれも Apache-2.0 だが、この配布物としての宣言が無い。approved に上げる前に作者へ確認する
   - repo: stabilityai/sdxl-vae
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: mit
   - repo: bluepen5805/mellow_pencil-XL
     host: huggingface
-    license: unknown            # TODO: 要確認
+    license: faipl-1.0-sd
+    licenseNote: >-
+      HF cardData の license_name。コピーレフト。生成物は Output 条項によりライセンス対象外
   - repo: civitai
     host: civitai
     license: per-model          # 作者ごとに異なる。API キーが要るものがある
