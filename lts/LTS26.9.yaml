@@ -76,9 +76,12 @@ customNodes:
     ref: 652565fc032c77855a99a941f2c3a33e603a8258
   - name: comfyui-logicutils
     repo: https://github.com/aria1th/ComfyUI-LogicUtils
-    ref: 33a0a38ecb627068996786087e2e6d09f53621f4
-    registryVersion: 1.7.2
-    # タグを打たないリポジトリ。Registry 公開日(2025-03-09)から解決した
+    ref: f77c699543b8f9977b24581af66ad026d340b663
+    registryVersion: 1.8.0
+    # ⚠️ 1.7.2 (33a0a38) を使わないこと。numpy を 1.26.4 へ巻き戻すため、
+    #    Colab の起動が約109秒延び、依存衝突が18件出る（2026-08-26 実機確認・道草雑草子氏）。
+    #    タグを打たないリポジトリなので、当初 Registry 公開日から SHA を解決したが、
+    #    そのバージョンが numpy に与える影響までは見ていなかった。1.8.0 に回避策が入っている。
   - name: seedvr2-videoupscaler
     repo: https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler
     ref: 4490bd1f482e026674543386bb2a4d176da245b9
