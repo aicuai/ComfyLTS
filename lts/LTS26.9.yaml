@@ -46,6 +46,8 @@ customNodes:
     repo: https://github.com/Isi-dev/ComfyUI_GGUF
     ref: bc5223b0e37e053dbec2ea5e5f52c2fd4b8f712a
     registryVersion: 1.1.10
+    license: apache-2.0
+    licenseNote: GitHub の LICENSE ファイル
     # ⚠️ registryVersion は git ref ではない。git checkout 1.1.10 は失敗する。
     # さらに Registry の comfyui-gguf 1.1.10 は city96 版を指しており、
     # 書籍のワークフローが実際に使う Isi-dev フォークとは別物。
@@ -54,30 +56,46 @@ customNodes:
     repo: https://github.com/rgthree/rgthree-comfy
     ref: 683836c46e898668936c433502504cc0627482c5
     registryVersion: 1.0.2604070017
+    license: mit
+    licenseNote: GitHub の LICENSE ファイル
     # タグを打たないリポジトリ。Registry 公開日(2026-04-07)から解決した
   - name: comfyui_essentials
     repo: https://github.com/cubiq/ComfyUI_essentials
     ref: 9d9f4bedfc9f0321c19faf71855e228c93bd0dc9
+    license: mit
+    licenseNote: GitHub の LICENSE ファイル
   - name: comfyui-kjnodes
     repo: https://github.com/kijai/ComfyUI-KJNodes
     ref: a6b867b63a29ca48ddb15c589e17a9f2d8530d57
+    license: gpl-3.0
+    licenseNote: GitHub の LICENSE ファイル。⚠️ コピーレフト。イメージに焼いて配布する場合はソース提供義務が生じる
   - name: comfyui-videohelpersuite
     repo: https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
     ref: 2984ec4c4b93292421888f38db74a5e8802a8ff8
+    license: gpl-3.0
+    licenseNote: GitHub の LICENSE ファイル。⚠️ コピーレフト。イメージに焼いて配布する場合はソース提供義務が生じる
     # ワークフロー間で 8e4d7947(2025-08-07) と割れていた。新しい側へ寄せた
   - name: comfyui-frame-interpolation
     repo: https://github.com/Fannovel16/ComfyUI-Frame-Interpolation
     ref: 26545cc2dd95bc3d27f056016300673bdeee78f5
+    license: mit
+    licenseNote: GitHub の LICENSE ファイル
   - name: comfyui-vfi
     repo: https://github.com/GACLove/ComfyUI-VFI
     ref: 62c60feff88f651c24e12006567ba48260ab43aa
+    license: undeclared
+    licenseNote: pyproject.toml が license = { file = "LICENSE" } を指しているが、その LICENSE ファイルが存在しない。参照が壊れている。作者への確認が要る
   - name: comfyui-painteri2v
     repo: https://github.com/princepainter/ComfyUI-PainterI2V
     ref: 652565fc032c77855a99a941f2c3a33e603a8258
+    license: undeclared
+    licenseNote: LICENSE ファイルも pyproject.toml も無い。作者への確認が要る
   - name: comfyui-logicutils
     repo: https://github.com/aria1th/ComfyUI-LogicUtils
     ref: f77c699543b8f9977b24581af66ad026d340b663
     registryVersion: 1.8.0
+    license: mit
+    licenseNote: pyproject.toml の license = "MIT"。LICENSE ファイルは無いのでメタデータのみの宣言
     # ⚠️ 1.7.2 (33a0a38) を使わないこと。numpy を 1.26.4 へ巻き戻すため、
     #    Colab の起動が約109秒延び、依存衝突が18件出る（2026-08-26 実機確認・道草雑草子氏）。
     #    タグを打たないリポジトリなので、当初 Registry 公開日から SHA を解決したが、
@@ -85,6 +103,8 @@ customNodes:
   - name: seedvr2-videoupscaler
     repo: https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler
     ref: 4490bd1f482e026674543386bb2a4d176da245b9
+    license: apache-2.0
+    licenseNote: GitHub の LICENSE ファイル
 
 # モデルの配布元。license は ComfyLTS の存在理由なので必ず埋める。
 # unknown / undeclared を残したまま approved にしない。
