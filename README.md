@@ -87,3 +87,20 @@ are packaged. Track the strategy and progress in the AICU infrastructure repos.
 *ComfyUI is © its authors, licensed under GPL-3.0. ComfyLTS is an AICU Japan effort to package and
 maintain a stable, license-cleared distribution of it; it is not affiliated with or endorsed by the
 upstream ComfyUI project.*
+
+## License
+
+**Apache License 2.0** — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+このリポジトリが Apache-2.0 で提供するのは **台帳（`lts/`）とツール（`tools/`）**です。
+`lts/*.yaml` は「どの版を使うか」を記録した事実の集合で、**ComfyUI 本体・カスタムノード・
+モデルの実体は含んでいません。**
+
+**台帳に記録された版を実際に取得・実行する場合、利用者は各配布元のライセンスに従う
+必要があります。**（ComfyUI 本体は GPL-3.0、カスタムノードは Apache-2.0 / MIT / GPL-3.0 が
+混在します。各エントリの `license` を参照してください。）
+
+Apache-2.0 を選んだのは、企業がこの台帳を参照して自社環境を組む場面を想定しているためです。
+特許の明示的な許諾があるため、採用側が「後から特許で追われないか」を確認せずに済みます。
+
+Copyright 2026 AICU Japan K.K.
