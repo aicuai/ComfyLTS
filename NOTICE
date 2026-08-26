@@ -1,22 +1,24 @@
 ComfyLTS
-Copyright 2026 AICU Japan K.K. (AICU Japan 株式会社)
+Copyright 2026 AICU Japan K.K.
 
 This product includes software developed by AICU Japan K.K.
 
 --------------------------------------------------------------------------------
-このリポジトリが「参照している」もの（同梱はしていない）
+What this repository REFERENCES but does NOT bundle
 --------------------------------------------------------------------------------
 
-lts/*.yaml は、ComfyUI 本体・カスタムノード・モデルの版を記録した台帳です。
-**それらのソフトウェア自体は本リポジトリに含まれていません。** 台帳は、どの版を
-使うかを指し示すだけで、実体は各配布元から取得されます。
+The manifests under `lts/` record the versions of ComfyUI, custom nodes and models
+that make up an LTS line. **The referenced software itself is NOT contained in this
+repository.** A manifest only points at a version; the actual code and weights are
+fetched from their original distributors.
 
-参照先のライセンスは台帳の各エントリに記録しています。主なものは次のとおりです。
+Each manifest entry records the license of what it points at. In summary:
 
-  ComfyUI (comfyanonymous/ComfyUI)         GPL-3.0
-  カスタムノード 10 件                      Apache-2.0 / MIT / GPL-3.0（台帳を参照）
-  モデル配布元 8 件                         Apache-2.0 / MIT / FAIPL-1.0-SD ほか
+  ComfyUI (comfyanonymous/ComfyUI)   GPL-3.0
+  Custom nodes (10)                  Apache-2.0 / MIT / GPL-3.0 (see the manifest)
+  Model sources (8)                  Apache-2.0 / MIT / FAIPL-1.0-SD and others
 
-**台帳に記録した版を実際に取得・実行する場合、利用者は各配布元のライセンスに
-従う必要があります。** 本リポジトリの Apache-2.0 は、台帳とツールに対してのみ
-適用され、参照先のソフトウェアには及びません。
+**If you fetch and run the versions recorded here, you must comply with the license
+of each distributor.** The Apache-2.0 license of this repository applies only to the
+manifests and the tools in this repository, and does not extend to the referenced
+software.

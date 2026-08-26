@@ -88,19 +88,22 @@ are packaged. Track the strategy and progress in the AICU infrastructure repos.
 maintain a stable, license-cleared distribution of it; it is not affiliated with or endorsed by the
 upstream ComfyUI project.*
 
+
 ## License
 
 **Apache License 2.0** — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
-このリポジトリが Apache-2.0 で提供するのは **台帳（`lts/`）とツール（`tools/`）**です。
-`lts/*.yaml` は「どの版を使うか」を記録した事実の集合で、**ComfyUI 本体・カスタムノード・
-モデルの実体は含んでいません。**
+What Apache-2.0 covers here is **the manifests (`lts/`) and the tools (`tools/`)**.
+A manifest is a record of *which versions to use*; it does **not** contain ComfyUI,
+the custom nodes, or the model weights themselves.
 
-**台帳に記録された版を実際に取得・実行する場合、利用者は各配布元のライセンスに従う
-必要があります。**（ComfyUI 本体は GPL-3.0、カスタムノードは Apache-2.0 / MIT / GPL-3.0 が
-混在します。各エントリの `license` を参照してください。）
+**If you fetch and run the versions recorded in a manifest, you must comply with the
+license of each distributor.** ComfyUI itself is GPL-3.0; the custom nodes are a mix of
+Apache-2.0, MIT and GPL-3.0. Every entry carries a `license` field — read it.
 
-Apache-2.0 を選んだのは、企業がこの台帳を参照して自社環境を組む場面を想定しているためです。
-特許の明示的な許諾があるため、採用側が「後から特許で追われないか」を確認せずに済みます。
+We chose Apache-2.0 because companies are expected to read these manifests and build
+their own environments from them. Its explicit patent grant means an adopter does not
+have to wonder whether a patent claim follows later. (MIT is silent on patents, and
+AICU holds patents, so we would rather say it than leave it unsaid.)
 
 Copyright 2026 AICU Japan K.K.
