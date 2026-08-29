@@ -12,7 +12,8 @@ kind: LTSLine
 
 metadata:
   name: LTS26.9
-  status: proposed          # proposed | approved | frozen | deprecated
+  status: approved          # proposed | approved | frozen | deprecated
+  stage: rc1               # RC1。ライセンス以外の門はすべて緑（2026-08-30）
   created: 2026-08-20
   summary: >-
     Wan2.2（I2V / FLF2V）と Seedance2.0（R2V）を対象に含む LTS ライン。
