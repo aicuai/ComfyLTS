@@ -159,9 +159,23 @@ verification:
       output: 1254x720
 
 consumers:
+  # ⚠️ **書籍が実際に使うノートブックを指すこと。**
+  #    2026-08-29 まで ipynb/ComfyUI.ipynb を指していたが、**5章はこれを使わない**。
+  #    そのせいで「Core がタグ固定されていない」「rank256 が案内されていない」という
+  #    誤報を2件出した（SG26#37 / #39）。実際の 5章用ノートブックは Core を
+  #    v0.33.0 で固定し、ノード10件を SHA で checkout している。
+  #    パスが実在するかだけを見ても、**指す先が違えば検査は無意味**になる。
   - repo: aicuai/Book-SG26
-    path: ipynb/ComfyUI.ipynb
-    coupling: loose             # タグ名の文字列を共有するだけ。fetch しない
-    note: >-
+    path: ipynb/SG26-ComfyUI-Wan22.ipynb
+    shortlink: https://j.aicu.ai/SG26CW
+    chapters: ["5-2", "5-3"]
+    coupling: loose
+    note: |
       Colab は git clone で入れるため、コンテナは使わない。
       ComfyLTS が更新されても書籍側は追従しない（刊行後は固定）。
+      Core を --branch v0.33.0 で、カスタムノードを checkout <sha> で固定済み。
+  - repo: aicuai/Book-SG26
+    path: ipynb/SG26-SD2-R2V.ipynb
+    chapters: ["5-4"]
+    coupling: loose
+    note: Seedance2.0 R2V と SeedVR2 アップスケール。Core とノードの固定は同上。
