@@ -110,9 +110,25 @@ modelSources:
       量子化元の Wan2.2 を継承
   - repo: Kijai/WanVideo_comfy
     host: huggingface
-    license: undeclared
-    licenseNote: >-
-      リポジトリに宣言なし（同梱の ditto_LICENSE.txt は LoRA 個別のもの）。収録物の上流（Wan-AI / lightx2v）はいずれも Apache-2.0 だが、この配布物としての宣言が無い。approved に上げる前に作者へ確認する
+    license: as-is-upstream-apache-2.0
+    licenseNote: |
+      配布元が宣言していない。**調べ尽くしたうえで「上流に従う」と判断して収録する。**
+      未調査の空白 (undeclared) ではなく、記録された判断であることを区別するために
+      この値を使う。
+
+      根拠:
+        - 上流の Wan-AI / lightx2v はいずれも apache-2.0（HF API で実査・2026-08-27）
+        - 当該リポジトリの README が両者を出典として明記している
+        - HF cardData に license なし / LICENSE ファイルなし
+          （同梱の LoRAs/Ditto/ditto_LICENSE.txt は別 LoRA のもの）
+        - 第三者による公開の確認要求が 2026-05-05 から未応答（HF discussions #125）
+        - 2026-08-30 に書籍著者名義で確認を依頼し、2026-09-03 までに応答なし
+
+      **書籍および LTS では、氏の名前とリポジトリを明記し、当社としてのライセンス
+      主張は行わない。** 宣言が出た時点で本項を差し替える。
+
+      対象: Lightx2v/lightx2v_I2V_14B_480p_cfg_step_distill_rank256_bf16.safetensors
+      書籍 5-2 (p.226-239) が本文中でファイル名まで明記して案内している。
   - repo: stabilityai/sdxl-vae
     host: huggingface
     license: mit
